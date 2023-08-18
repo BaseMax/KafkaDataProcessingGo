@@ -62,7 +62,91 @@ The consumer will listen for incoming user activity data and process it accordin
 
 ## Sample Dataset
 
-For your convenience, we've included a sample dataset in the sample_data directory. This dataset contains mock user activity logs that you can use to test the application.
+<!-- For your convenience, we've included a sample dataset in the sample_data directory. This dataset contains mock user activity logs that you can use to test the application. -->
+
+This application deals with tracking user activities on an e-commerce website. Here's a simple example of a JSON-based user activity dataset:
+
+```json
+[
+  {
+    "user_id": "user123",
+    "timestamp": "2023-08-18T10:00:00Z",
+    "action": "view",
+    "product_id": "prod456"
+  },
+  {
+    "user_id": "user456",
+    "timestamp": "2023-08-18T11:30:00Z",
+    "action": "add_to_cart",
+    "product_id": "prod123"
+  },
+  {
+    "user_id": "user789",
+    "timestamp": "2023-08-18T12:15:00Z",
+    "action": "purchase",
+    "product_id": "prod789"
+  },
+  // More entries...
+]
+```
+
+You can create a sample dataset file like sample_data.json in the root directory of your project with multiple such entries.
+
+Please note that this is just a basic representation, and you can extend it with additional fields and more complex data as needed for your application.
+
+For generating a larger dataset, you might consider using libraries like Faker (for generating realistic fake data) in combination with Go's built-in JSON handling capabilities. Here's a rough example of how you could generate a larger dataset using Faker:
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"os"
+	"time"
+
+	"github.com/bxcodec/faker/v3"
+)
+
+type UserActivity struct {
+	UserID     string    `json:"user_id"`
+	Timestamp  time.Time `json:"timestamp"`
+	Action     string    `json:"action"`
+	ProductID  string    `json:"product_id"`
+}
+
+func main() {
+	var activities []UserActivity
+
+	for i := 0; i < 1000; i++ {
+		activity := UserActivity{
+			UserID:     faker.UUIDHyphenated(),
+			Timestamp:  faker.DateUnix(),
+			Action:     faker.RandomChoice([]string{"view", "add_to_cart", "purchase"}),
+			ProductID:  faker.UUIDHyphenated(),
+		}
+		activities = append(activities, activity)
+	}
+
+	file, err := os.Create("sample_data.json")
+	if err != nil {
+		fmt.Println("Error creating file:", err)
+		return
+	}
+	defer file.Close()
+
+	encoder := json.NewEncoder(file)
+	encoder.SetIndent("", "  ")
+	if err := encoder.Encode(activities); err != nil {
+		fmt.Println("Error encoding JSON:", err)
+		return
+	}
+
+	fmt.Println("Sample data generated and saved to sample_data.json")
+}
+```
+
+Remember that this is just a basic example to get you started. Depending on your application's needs, you might want to generate more complex data with a wider range of possible actions, timestamps, and user profiles.
 
 ## Contributing
 
