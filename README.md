@@ -17,8 +17,8 @@ Before you begin, make sure you have the following prerequisites:
 Clone this repository:
 
 ```bash
-git clone https://github.com/basemax/kafka-data-processing-go.git
-cd kafka-data-processing-go
+git clone https://github.com/basemax/KafkaDataProcessingGo.git
+cd KafkaDataProcessingGo
 ```
 
 Start the Kafka server and create the necessary topics (assuming you've already installed Kafka):
