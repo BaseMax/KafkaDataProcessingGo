@@ -22,6 +22,7 @@ var fakerCmd = &cobra.Command{
 	Long:  `Create a fake dataset for sending to Apache Kafka`,
 	Run: func(cmd *cobra.Command, args []string) {
 		path, _ := cmd.Flags().GetString("output")
+		duration, _ := cmd.Flags().GetInt("duration")
 
 		f, err := os.Create(path)
 		if err != nil {
@@ -31,7 +32,7 @@ var fakerCmd = &cobra.Command{
 
 		var activities []models.UserActivity
 	loop:
-		for timeout := time.After(time.Second * 10); ; {
+		for timeout := time.After(time.Second * time.Duration(duration)); ; {
 			select {
 			case <-timeout:
 				break loop
@@ -54,4 +55,5 @@ var fakerCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(fakerCmd)
 	fakerCmd.PersistentFlags().StringP("output", "o", "sample_data.json", "Path of sample dataset")
+	fakerCmd.PersistentFlags().IntP("duration", "d", 10, "Dataset generation time")
 }

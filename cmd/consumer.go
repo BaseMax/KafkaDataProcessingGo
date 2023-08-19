@@ -33,9 +33,11 @@ func prepareMonitoring() {
 	}
 
 	go func() {
-		for _, gauge := range gauges {
-			time.Sleep(time.Second)
-			gauge.Set(0)
+		for {
+			for _, gauge := range gauges {
+				time.Sleep(time.Second)
+				gauge.Set(0)
+			}
 		}
 	}()
 

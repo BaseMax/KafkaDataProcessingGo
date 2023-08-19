@@ -56,7 +56,7 @@ var producerCmd = &cobra.Command{
 			}
 
 			if fakeDelay {
-				time.Sleep(time.Millisecond * time.Duration(rand.Intn(500)))
+				time.Sleep(time.Nanosecond * time.Duration(rand.Intn(300)+200))
 			}
 		}
 	},
