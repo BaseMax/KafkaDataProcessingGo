@@ -9,9 +9,10 @@ import (
 	"os"
 	"time"
 
-	"github.com/BaseMax/KafkaDataProcessingGo/models"
 	"github.com/go-faker/faker/v4"
 	"github.com/spf13/cobra"
+
+	"github.com/BaseMax/KafkaDataProcessingGo/models"
 )
 
 // fakerCmd represents the faker command

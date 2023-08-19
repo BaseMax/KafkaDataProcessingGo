@@ -1,5 +1,7 @@
 package models
 
+var USER_ACTIONS = []string{"view", "add_to_product", "purchase"}
+
 type User struct {
 	ID       uint   `json:"id" faker:"-"`
 	Username string `json:"user" faker:"username"`

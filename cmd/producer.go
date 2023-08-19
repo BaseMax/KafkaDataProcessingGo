@@ -7,11 +7,14 @@ import (
 	"context"
 	"encoding/json"
 	"log"
+	"math/rand"
 	"os"
+	"time"
 
-	"github.com/BaseMax/KafkaDataProcessingGo/models"
 	"github.com/segmentio/kafka-go"
 	"github.com/spf13/cobra"
+
+	"github.com/BaseMax/KafkaDataProcessingGo/models"
 )
 
 // producerCmd represents the producer command
@@ -24,6 +27,7 @@ var producerCmd = &cobra.Command{
 		topic, _ := cmd.Flags().GetString("topic")
 		partition, _ := cmd.Flags().GetInt("partition")
 		path, _ := cmd.Flags().GetString("dataset")
+		fakeDelay, _ := cmd.Flags().GetBool("fake-delay")
 
 		f, err := os.Open(path)
 		if err != nil {
@@ -50,6 +54,10 @@ var producerCmd = &cobra.Command{
 			if err != nil {
 				log.Println(err)
 			}
+
+			if fakeDelay {
+				time.Sleep(time.Millisecond * time.Duration(rand.Intn(500)))
+			}
 		}
 	},
 }
@@ -60,4 +68,5 @@ func init() {
 	producerCmd.PersistentFlags().StringP("topic", "t", "activities", "Kafka topic")
 	producerCmd.PersistentFlags().IntP("partitions", "p", 1, "Kafka topic partitions")
 	producerCmd.PersistentFlags().StringP("dataset", "d", "sample_data.json", "Dataset path")
+	producerCmd.PersistentFlags().BoolP("fake-delay", "f", false, "Dataset path")
 }

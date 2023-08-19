@@ -4,6 +4,7 @@ scrape_configs:
     honor_labels: false
     honor_timestamps: true
     scheme: http
+    scrape_interval: 1s
     follow_redirects: true
     body_size_limit: 0
     sample_limit: 0

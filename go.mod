@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	github.com/go-faker/faker/v4 v4.1.1
+	github.com/prometheus/client_golang v1.16.0
 	github.com/segmentio/kafka-go v0.4.42
 	github.com/spf13/cobra v1.7.0
 )
@@ -16,7 +17,6 @@ require (
 	github.com/klauspost/compress v1.15.9 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
 	github.com/pierrec/lz4/v4 v4.1.15 // indirect
-	github.com/prometheus/client_golang v1.16.0 // indirect
 	github.com/prometheus/client_model v0.3.0 // indirect
 	github.com/prometheus/common v0.42.0 // indirect
 	github.com/prometheus/procfs v0.10.1 // indirect
