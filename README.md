@@ -31,21 +31,79 @@ bin/zookeeper-server-start.sh config/zookeeper.properties
 bin/kafka-server-start.sh config/server.properties
 
 # Create the required topics
-bin/kafka-topics.sh --create --topic userActivity --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
+bin/kafka-topics.sh --create --topic activities --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
 ```
+
+Start prometheus server and config like this:
+```yaml
+scrape_configs:
+  - job_name: KafkaProcessing
+    metrics_path: /metrics
+    honor_labels: false
+    honor_timestamps: true
+    scheme: http
+    scrape_interval: 1s
+    follow_redirects: true
+    body_size_limit: 0
+    sample_limit: 0
+    label_limit: 0
+    label_name_length_limit: 0
+    label_value_length_limit: 0
+    target_limit: 0
+    static_configs:
+      - targets:
+          - "HOSTNAME:8000"
+```
+
+You can optionally using Grafana. Grafana configurations placed on `grafana/` directory.
 
 ### Usage
 
 This project consists of two main components: Producer and Consumer.
+
+### Run via docker
+
+#### Docker setup
+
+You can change .env configurations.
+
+#### Start app
+
+Start application and it's dependencies using docker compose.
+```bash
+make run
+```
+or
+```bash
+docker-compose up -d
+```
+
+You can check some endpoints to ensure checking health of system.
+ - localhost:8000/metrics - Consumer application
+ - localhost:29092 - Kafka server
+ - localhost:9090 - Prometheus server
+ - localhost:3000 - Grafana server
+
+#### Config Grafana
+
+Import datasource configurations using following command:
+```bash
+make grafana_import_ds
+```
+
+Import Grafana dashboards manually. You can copy json configuration on `grafana/dashboards/` directory and import it to Grafana.
+
+NOTE: If you wanna build application image multiple times you can use `go mod vendor` command to keeping dependencies on container. With this technique build process will speed up.
 
 ### Producer
 
 The producer generates mock user activity data and sends it to the Kafka topic. To run the producer:
 
 ```bash
-cd producer
-go run main.go
+go run . producer
 ```
+
+Use `-f` option for creating fake delay on publishing Kafka messages.
 
 The producer will continuously generate and send user activity data to the Kafka topic.
 
@@ -54,11 +112,18 @@ The producer will continuously generate and send user activity data to the Kafka
 The consumer subscribes to the Kafka topic, processes the user activity data, and performs analytics. To run the consumer:
 
 ```bash
-cd consumer
-go run main.go
+go run . consumer
 ```
 
 The consumer will listen for incoming user activity data and process it accordingly.
+
+### Faker
+
+The faker create sample dataset for producer.
+
+```bash
+go run . faker
+```
 
 ## Sample Dataset
 
